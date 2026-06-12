@@ -3,25 +3,133 @@
 Local Markdown to DOCX converter based on
 [`vace/markdown-docx`](https://github.com/vace/markdown-docx).
 
-## Install
+## Quick Start
+
+Most users do not need Node.js, pnpm, or a build step. Download the binary for
+your operating system from the
+[GitHub Releases](https://github.com/Sayyat/md-to-docx-local/releases) page,
+put it in a directory that is listed in `PATH`, and run `md-to-docx`.
+`PATH` is the operating system setting that tells the terminal where to search
+for command-line programs.
+
+Choose the release asset that matches your system:
+
+| System | CPU | Release asset |
+| --- | --- | --- |
+| Linux | x64 / amd64 | `md-to-docx-linux-x64` |
+| Linux | arm64 / aarch64 | `md-to-docx-linux-arm64` |
+| macOS Intel | x64 | `md-to-docx-macos-x64` |
+| macOS Apple Silicon | arm64 | `md-to-docx-macos-arm64` |
+| Windows | x64 | `md-to-docx-win-x64.exe` |
+
+If the Releases page does not have binaries yet, use the
+[Development Setup](#development-setup) section and build locally.
+
+Check your CPU on Linux or macOS with:
 
 ```bash
-pnpm install
+uname -m
 ```
 
-This project is maintained with `pnpm`. The npm lockfile is kept only as a
-compatibility snapshot; development, builds, and releases use `pnpm`.
+Typical values:
+
+- `x86_64` means x64 / amd64;
+- `aarch64` or `arm64` means arm64.
+
+## Install a Release Binary
+
+### Linux
+
+Download `md-to-docx-linux-x64` or `md-to-docx-linux-arm64`, then install it as
+`md-to-docx`:
+
+```bash
+mkdir -p ~/.local/bin
+cp ~/Downloads/md-to-docx-linux-x64 ~/.local/bin/md-to-docx
+chmod +x ~/.local/bin/md-to-docx
+```
+
+Make sure `~/.local/bin` is in `PATH`:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+If you use Zsh:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+### macOS
+
+Download `md-to-docx-macos-x64` or `md-to-docx-macos-arm64`, then install it as
+`md-to-docx`:
+
+```bash
+mkdir -p ~/bin
+cp ~/Downloads/md-to-docx-macos-arm64 ~/bin/md-to-docx
+chmod +x ~/bin/md-to-docx
+```
+
+Add `~/bin` to `PATH` for the default macOS Zsh shell:
+
+```bash
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+If macOS blocks the downloaded binary because it came from the internet, remove
+the quarantine flag:
+
+```bash
+xattr -d com.apple.quarantine ~/bin/md-to-docx 2>/dev/null || true
+```
+
+### Windows
+
+Download `md-to-docx-win-x64.exe`, create a personal bin directory, and copy the
+binary there as `md-to-docx.exe`:
+
+```powershell
+$bin = "$env:USERPROFILE\bin"
+New-Item -ItemType Directory -Force $bin
+Copy-Item "$env:USERPROFILE\Downloads\md-to-docx-win-x64.exe" "$bin\md-to-docx.exe" -Force
+```
+
+Add that directory to the user `PATH` from PowerShell:
+
+```powershell
+$bin = "$env:USERPROFILE\bin"
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($userPath -split ";") -notcontains $bin) {
+  [Environment]::SetEnvironmentVariable("Path", "$userPath;$bin", "User")
+}
+```
+
+Close and reopen the terminal after changing `PATH`.
+
+### Verify Installation
+
+```bash
+md-to-docx --help
+```
+
+If this command works from any folder, installation is complete.
 
 ## Convert One File
 
 ```bash
-pnpm run convert -- /path/to/input.md --out-dir /path/to/output
+md-to-docx /path/to/input.md
+md-to-docx /path/to/input.md --out-dir /path/to/output
 ```
 
-or after building the binary:
+The default output path is next to the input file:
 
-```bash
-./dist/md-to-docx-linux-x64 /path/to/input.md --out-dir /path/to/output
+```text
+/path/to/input.md -> /path/to/input.docx
 ```
 
 The default engine is `markdown-docx`:
@@ -43,7 +151,7 @@ The same academic post-processing is applied after both engines.
 ## Convert a Folder
 
 ```bash
-pnpm run convert -- /path/to/docs --out-dir /path/to/docx
+md-to-docx /path/to/docs --out-dir /path/to/docx
 ```
 
 ## Image Sizing
@@ -166,15 +274,34 @@ Round-10 comparison under the full matrix
 
 ## Use with SboxFiniteAutomata
 
-From anywhere:
+After `md-to-docx` is available in `PATH`, run it from the
+`SboxFiniteAutomata` repository:
 
 ```bash
-/home/sayat/projects/science/md-to-docx-local/dist/md-to-docx-linux-x64 \
-  /home/sayat/projects/science/SboxFiniteAutomata/docs/algorithm_explanations \
-  --out-dir /home/sayat/projects/science/SboxFiniteAutomata/generated/docx/algorithm_explanations
+cd /home/sayat/projects/science/SboxFiniteAutomata
+md-to-docx docs/algorithm_explanations --out-dir generated/docx/algorithm_explanations
 ```
 
-## Build Binary
+## Development Setup
+
+Advanced users can clone the repository and build the binary themselves:
+
+```bash
+git clone https://github.com/Sayyat/md-to-docx-local.git
+cd md-to-docx-local
+pnpm install
+```
+
+This project is maintained with `pnpm`. The npm lockfile is kept only as a
+compatibility snapshot; development, builds, and releases use `pnpm`.
+
+Run from source:
+
+```bash
+pnpm run convert -- /path/to/input.md
+```
+
+Build the local Linux x64 binary:
 
 ```bash
 pnpm run build
@@ -184,6 +311,25 @@ The binary is written to:
 
 ```text
 dist/md-to-docx-linux-x64
+```
+
+Build all release binaries:
+
+```bash
+pnpm run build:all
+```
+
+Local cross-platform builds are useful for checking the packaging flow. Official
+release binaries are built by GitHub Actions on Linux, macOS, and Windows
+runners.
+
+Build only one release target:
+
+```bash
+pnpm run bundle
+node scripts/build-release.mjs linux-x64
+node scripts/build-release.mjs macos-arm64
+node scripts/build-release.mjs win-x64
 ```
 
 ## Release
@@ -208,13 +354,6 @@ binary on Windows. It uploads:
 - `md-to-docx-win-x64.exe`;
 - source archives in `.tar.gz` and `.zip` formats;
 - `SHA256SUMS.txt`.
-
-Use the local multi-platform build directly with:
-
-```bash
-pnpm run build:all
-node scripts/build-release.mjs linux-x64
-```
 
 ## Notes
 
