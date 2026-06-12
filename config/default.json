@@ -1,0 +1,113 @@
+{
+  "engine": "markdown-docx",
+  "document": {
+    "creator": "md-to-docx-local",
+    "description": "Generated locally from Markdown."
+  },
+  "style": {
+    "textColor": "000000",
+    "pageMarginsCm": {
+      "left": 3,
+      "right": 1,
+      "top": 2,
+      "bottom": 2
+    },
+    "paragraph": {
+      "lineSpacing": 1,
+      "firstLineCm": 1.25,
+      "spacingBeforePt": 0,
+      "spacingAfterPt": 0,
+      "removeBlankLinesBetweenParagraphs": true
+    },
+    "math": {
+      "align": "center",
+      "lineSpacing": 1,
+      "spacingBeforePt": 0,
+      "spacingAfterPt": 0,
+      "removeAdjacentBlankLines": true
+    },
+    "title": {
+      "fontSizePt": 16,
+      "lineSpacing": 1,
+      "spacingBeforePt": 0,
+      "spacingAfterPt": 0
+    },
+    "headings": {
+      "fontSizePt": 12,
+      "lineSpacing": 1,
+      "firstLineCm": 1.25,
+      "blankLinesAfter": 1,
+      "blankLinesBetweenConsecutive": 1,
+      "pageBreakBeforeTopLevel": false,
+      "pageBreakBeforeNumberedTopLevel": true,
+      "spacingBeforePt": 0,
+      "spacingAfterPt": 0
+    },
+    "listItem": {
+      "lineSpacing": 1,
+      "firstLineCm": 1.25,
+      "numberTextGapCm": 0.5,
+      "levelIndentCm": 0.75,
+      "spacingBeforePt": 0,
+      "spacingAfterPt": 0
+    },
+    "captions": {
+      "figureAlign": "center",
+      "tableAlign": "left",
+      "imageAlign": "left"
+    }
+  },
+  "captions": {
+    "enabled": true,
+    "figurePrefix": "Сурет",
+    "tablePrefix": "Кесте"
+  },
+  "converter": {
+    "gfm": true,
+    "ignoreImage": false,
+    "ignoreFootnote": false,
+    "ignoreHtml": false,
+    "math": {
+      "engine": "katex",
+      "libreOfficeCompat": true
+    },
+    "image": {
+      "maxWidthPx": 560
+    },
+    "theme": {
+      "heading1": "000000",
+      "heading2": "000000",
+      "heading3": "000000",
+      "heading4": "000000",
+      "heading5": "000000",
+      "heading6": "000000",
+      "link": "000000",
+      "code": "000000",
+      "tag": "000000",
+      "codespan": "000000",
+      "blockquote": "000000",
+      "html": "000000",
+      "del": "000000",
+      "hr": "000000",
+      "border": "000000",
+      "tableHeaderBackground": "D9D9D9",
+      "bodySize": 12,
+      "spaceSize": 12,
+      "heading1Size": 12,
+      "heading2Size": 12,
+      "heading3Size": 12,
+      "heading4Size": 12,
+      "heading5Size": 12,
+      "heading6Size": 12,
+      "lineSpacing": 1,
+      "linkUnderline": false
+    }
+  },
+  "pandoc": {
+    "binary": "pandoc",
+    "from": "markdown+tex_math_dollars+pipe_tables+table_captions+fenced_code_blocks+strikeout+footnotes+yaml_metadata_block",
+    "standalone": true,
+    "referenceDoc": null,
+    "extraArgs": []
+  }
+}

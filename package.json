@@ -1,0 +1,30 @@
+{
+  "name": "md-to-docx-local",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone local Markdown to DOCX converter.",
+  "packageManager": "pnpm@10.33.0",
+  "bin": {
+    "md-to-docx": "./src/cli.cjs"
+  },
+  "scripts": {
+    "convert": "node src/cli.cjs",
+    "bundle": "esbuild src/cli.cjs --bundle --platform=node --target=node20 --format=cjs --outfile=build/md-to-docx.cjs",
+    "build": "pnpm run bundle && pkg build/md-to-docx.cjs --targets node20-linux-x64 --no-bytecode --public --output dist/md-to-docx-linux-x64",
+    "build:all": "pnpm run bundle && node scripts/build-release.mjs",
+    "clean": "rm -rf build dist release-assets",
+    "check": "node --check src/cli.cjs && node --check scripts/build-release.mjs && node --check release.mjs",
+    "release": "node ./release.mjs",
+    "test": "pnpm run check"
+  },
+  "dependencies": {
+    "image-size": "2.0.2",
+    "jszip": "3.10.1",
+    "markdown-docx": "1.6.0"
+  },
+  "devDependencies": {
+    "@yao-pkg/pkg": "6.6.0",
+    "esbuild": "0.27.1"
+  }
+}
