@@ -39,7 +39,7 @@
       "blankLinesAfter": 1,
       "blankLinesBetweenConsecutive": 1,
       "pageBreakBeforeTopLevel": false,
-      "pageBreakBeforeNumberedTopLevel": true,
+      "pageBreakBeforeNumberedTopLevel": false,
       "spacingBeforePt": 0,
       "spacingAfterPt": 0
     },

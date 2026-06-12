@@ -186,10 +186,10 @@ The default config uses an academic document style:
   before/after spacing and `1.25 cm` first-line indent;
 - every Markdown heading is followed by one blank spacer paragraph;
 - consecutive Markdown headings are separated by one blank spacer paragraph;
-- numbered top-level headings such as `# 6. Proposed Algorithm` start on a new
-  page;
+- top-level headings continue on the current page by default, including
+  numbered headings such as `# 6. Proposed Algorithm`;
 - use `-np` for dissertation-style output where every top-level heading starts
-  on a new page, or `-no-np` for article-style continuous sections;
+  on a new page;
 - Markdown list items: marker starts at `1.25 cm`, with a readable `0.5 cm`
   gap between the marker and text;
 - default text color: black;

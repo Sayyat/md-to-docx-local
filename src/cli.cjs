@@ -54,7 +54,7 @@ const DEFAULT_CONFIG_DATA = {
       blankLinesAfter: 1,
       blankLinesBetweenConsecutive: 1,
       pageBreakBeforeTopLevel: false,
-      pageBreakBeforeNumberedTopLevel: true,
+      pageBreakBeforeNumberedTopLevel: false,
       spacingBeforePt: 0,
       spacingAfterPt: 0,
     },
@@ -1393,7 +1393,7 @@ function applyHeadingLayout(documentXml, headingStyle) {
   const blankAfter = normalizedNonNegativeInteger(headingStyle?.blankLinesAfter ?? 1);
   const blankBetween = normalizedNonNegativeInteger(headingStyle?.blankLinesBetweenConsecutive ?? 1);
   const pageBreakBeforeTopLevel = headingStyle?.pageBreakBeforeTopLevel === true;
-  const pageBreakBeforeNumberedTopLevel = headingStyle?.pageBreakBeforeNumberedTopLevel !== false;
+  const pageBreakBeforeNumberedTopLevel = headingStyle?.pageBreakBeforeNumberedTopLevel === true;
   return documentXml.replace(/<w:body>([\s\S]*?)<\/w:body>/, (_match, bodyXml) => {
     const paragraphs = splitBodyParts(bodyXml);
     const output = [];
