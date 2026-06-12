@@ -1413,8 +1413,7 @@ function applyTableSpacingAfter(documentXml, tableStyle) {
         nextIndex += 1;
       }
 
-      const next = parts[nextIndex];
-      if (blankAfter > 0 && next && !isSectionPropertiesPart(next)) {
+      if (blankAfter > 0) {
         output.push(...Array.from({ length: blankAfter }, createSpaceParagraph));
       }
       index = nextIndex - 1;
@@ -1489,10 +1488,6 @@ function isSpaceParagraph(paragraphXml) {
 
 function isTablePart(partXml) {
   return /<w:tbl\b/.test(partXml ?? "");
-}
-
-function isSectionPropertiesPart(partXml) {
-  return /<w:sectPr\b/.test(partXml ?? "");
 }
 
 function isMathOnlyParagraph(paragraphXml) {
