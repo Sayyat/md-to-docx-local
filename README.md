@@ -332,6 +332,27 @@ node scripts/build-release.mjs macos-arm64
 node scripts/build-release.mjs win-x64
 ```
 
+## Agent Guidance
+
+This repository includes `AGENTS.md` for AI coding agents and maintainer
+automation. Ordinary users can ignore it.
+
+The maintainer keeps shared agent rules in:
+
+```text
+~/.gemini/GEMINI.md
+~/.gemini/rules/md_to_docx_local.md
+```
+
+Those local files come from the public rules repository:
+
+```text
+https://github.com/Sayyat/antigravity-rules
+```
+
+Agents working on this repository should read those rules first, then follow the
+repository-specific summary in `AGENTS.md`.
+
 ## Release
 
 Releases are tag-driven. The local command bumps `package.json`, commits the
