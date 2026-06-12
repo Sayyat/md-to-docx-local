@@ -71,6 +71,9 @@ const DEFAULT_CONFIG_DATA = {
       tableAlign: "left",
       imageAlign: "left",
     },
+    tables: {
+      blankLinesAfter: 1,
+    },
   },
   captions: {
     enabled: true,
@@ -994,6 +997,7 @@ async function applyDocxHouseStyle(buffer, styleConfig) {
     documentXml = applyHeadingLayout(documentXml, style.headings);
     documentXml = applyMathParagraphLayout(documentXml, style.math);
     documentXml = applyParagraphBlankLineLayout(documentXml, style.paragraph);
+    documentXml = applyTableSpacingAfter(documentXml, style.tables);
     documentXml = applyImageParagraphProperties(documentXml, style.captions);
     documentXml = applyListItemParagraphProperties(documentXml, style.listItem);
     documentXml = applyCaptionParagraphProperties(documentXml, style.captions);
@@ -1389,6 +1393,37 @@ function findNextNonSpacePart(parts, index) {
   return "";
 }
 
+function applyTableSpacingAfter(documentXml, tableStyle) {
+  const blankAfter = normalizedNonNegativeInteger(tableStyle?.blankLinesAfter ?? 1);
+
+  return documentXml.replace(/<w:body>([\s\S]*?)<\/w:body>/, (_match, bodyXml) => {
+    const parts = splitBodyParts(bodyXml);
+    const output = [];
+
+    for (let index = 0; index < parts.length; index += 1) {
+      const current = parts[index];
+      output.push(current);
+
+      if (!isTablePart(current)) {
+        continue;
+      }
+
+      let nextIndex = index + 1;
+      while (isSpaceParagraph(parts[nextIndex])) {
+        nextIndex += 1;
+      }
+
+      const next = parts[nextIndex];
+      if (blankAfter > 0 && next && !isSectionPropertiesPart(next)) {
+        output.push(...Array.from({ length: blankAfter }, createSpaceParagraph));
+      }
+      index = nextIndex - 1;
+    }
+
+    return `<w:body>${output.join("")}</w:body>`;
+  });
+}
+
 function applyHeadingLayout(documentXml, headingStyle) {
   const blankAfter = normalizedNonNegativeInteger(headingStyle?.blankLinesAfter ?? 1);
   const blankBetween = normalizedNonNegativeInteger(headingStyle?.blankLinesBetweenConsecutive ?? 1);
@@ -1431,7 +1466,7 @@ function applyHeadingLayout(documentXml, headingStyle) {
 }
 
 function splitBodyParts(bodyXml) {
-  return bodyXml.match(/<w:p\b[\s\S]*?<\/w:p>|[\s\S]*?(?=<w:p\b|$)/g)
+  return bodyXml.match(/<w:tbl\b[\s\S]*?<\/w:tbl>|<w:p\b[\s\S]*?<\/w:p>|[\s\S]*?(?=<w:tbl\b|<w:p\b|$)/g)
     ?.filter((part) => part.length > 0) ?? [];
 }
 
@@ -1450,6 +1485,14 @@ function isTopLevelHeading(paragraphXml) {
 
 function isSpaceParagraph(paragraphXml) {
   return /<w:pStyle w:val="MdSpace"/.test(paragraphXml ?? "");
+}
+
+function isTablePart(partXml) {
+  return /<w:tbl\b/.test(partXml ?? "");
+}
+
+function isSectionPropertiesPart(partXml) {
+  return /<w:sectPr\b/.test(partXml ?? "");
 }
 
 function isMathOnlyParagraph(paragraphXml) {
