@@ -6,13 +6,16 @@ Local Markdown to DOCX converter based on
 ## Install
 
 ```bash
-npm install
+pnpm install
 ```
+
+This project is maintained with `pnpm`. The npm lockfile is kept only as a
+compatibility snapshot; development, builds, and releases use `pnpm`.
 
 ## Convert One File
 
 ```bash
-npm run convert -- /path/to/input.md --out-dir /path/to/output
+pnpm run convert -- /path/to/input.md --out-dir /path/to/output
 ```
 
 or after building the binary:
@@ -40,7 +43,7 @@ The same academic post-processing is applied after both engines.
 ## Convert a Folder
 
 ```bash
-npm run convert -- /path/to/docs --out-dir /path/to/docx
+pnpm run convert -- /path/to/docs --out-dir /path/to/docx
 ```
 
 ## Image Sizing
@@ -174,7 +177,7 @@ From anywhere:
 ## Build Binary
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 The binary is written to:
