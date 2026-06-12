@@ -35,6 +35,7 @@ jobs:
 
   build-binaries:
     needs: check
+
     strategy:
       fail-fast: false
       matrix:
@@ -44,11 +45,11 @@ jobs:
           - target: linux-arm64
             os: ubuntu-latest
           - target: macos-x64
-            os: macos-13
+            os: ubuntu-latest
           - target: macos-arm64
             os: macos-latest
           - target: win-x64
-            os: windows-latest
+            os: ubuntu-latest
 
     runs-on: ${{ matrix.os }}
 
